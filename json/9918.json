@@ -1,12 +1,5 @@
 {
 "spider":"../jar/custom_spider.jar",
-"lives":[{"name":"初秋语","type":0,"url":"./listx.txt"},
-{"name":"YanG","type":0,"url":"https://fongmi.cachefly.net/YanG-1989/m3u/main/Adult.m3u"},
-{"name":"atsushi","type":0,"url":"https://fongmi.cachefly.net/atsushi444/iptv-epg/main/Adult.m3u"},
-{"name":"小武哥","type":0,"url":"https://qu.ax/PEHy.txt"},
-{"name":"AV","type":0,"url":"./livex.m3u"},
-{"name":"直播","type":0,"url":"https://fongmi.cachefly.net/YanG-1989/m3u/main/XX.m3u"}
-],
 "wallpaper":"https://liu.chuqiuyu.workers.dev",
 "sites":[
 {"key":"Jable","name":"Jable","type":3,"api":"csp_Jable","searchable":1,"recordable":0,"style":{"type":"rect","ratio":1.77}},
