@@ -1,5 +1,7 @@
 package com.github.catvod.net;
 
+import android.util.Log;
+
 import com.github.catvod.crawler.Spider;
 
 import java.io.IOException;
@@ -9,9 +11,11 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Dns;
 import okhttp3.Headers;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class OkHttp {
 
@@ -19,6 +23,8 @@ public class OkHttp {
     public static final String GET = "GET";
 
     private OkHttpClient client;
+
+    private static boolean sIsHttpLogEnable = Log.isLoggable("TVBox", Log.DEBUG);
 
     private static class Loader {
         static volatile OkHttp INSTANCE = new OkHttp();
@@ -101,6 +107,27 @@ public class OkHttp {
     }
 
     public static OkHttpClient.Builder getBuilder() {
-        return new OkHttpClient.Builder().addInterceptor(new OkhttpInterceptor()).dns(dns()).connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).hostnameVerifier((hostname, session) -> true).sslSocketFactory(new SSLCompat(), SSLCompat.TM);
+        return new OkHttpClient.Builder()
+                .addInterceptor(new OkhttpInterceptor())
+                .addNetworkInterceptor(createLogInterceptor())
+                .dns(dns())
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .hostnameVerifier((hostname, session) -> true)
+                .sslSocketFactory(new SSLCompat(), SSLCompat.TM);
+    }
+
+    public static Interceptor createLogInterceptor() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                if (sIsHttpLogEnable) {
+                    Log.d("HTTP", message);
+                }
+            }
+        });
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return loggingInterceptor;
     }
 }
