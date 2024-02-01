@@ -1,6 +1,7 @@
 package com.github.catvod.spider;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Filter;
@@ -20,7 +21,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Miss extends Spider {
-
+    private static final String TAG = "Miss";
+    private static final String home_url = "https://missav.com/cn";
     private final String url = "https://missav.com/";
 
     @Override
@@ -28,7 +30,7 @@ public class Miss extends Spider {
         List<Vod> list = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
         LinkedHashMap<String, List<Filter>> filters = new LinkedHashMap<>();
-        Document doc = Jsoup.parse(OkHttp.string(url));
+        Document doc = Jsoup.parse(OkHttp.string(home_url));
         for (Element a : doc.select("a.block.px-4.py-2.text-sm.leading-5.text-nord5.bg-nord3")) {
             String typeId = a.attr("href").replace(url, "");
             if (typeId.startsWith("dm") || typeId.contains("VR")) {
